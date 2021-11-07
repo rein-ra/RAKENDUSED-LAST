@@ -1,0 +1,15 @@
+.navbar{
+    display: flex;
+    flex-direction: row;
+
+    align-items: center;
+    justify-content: flex-end;
+    height: 5vh;
+
+    background-color: beige;
+}
+
+.taskButton{
+    padding: 15px;
+    transform: scale(1.5);
+}

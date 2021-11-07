@@ -1,2 +1,1 @@
-# RAKENDUSED-LAST
- 
+# Viimase kodutöö repo
