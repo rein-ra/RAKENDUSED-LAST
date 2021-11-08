@@ -1,7 +1,9 @@
 import { useContext, useState, useRef, useEffect } from "react";
 import { Context } from "../store";
 import { addPost, removePost, updatePosts } from "../store/actions";
-import { Table, Space } from 'antd';
+import { Table, Space, Layout } from 'antd';
+
+const { Content, Footer } = Layout
 
 const { Column } = Table;
 
@@ -56,18 +58,6 @@ function Posts() {
     addNewPost()
 
     if (inputRef.current) inputRef.current.focus();
-
-    /*{state.posts.data.map((e) => (
-      <li key={e.id}>
-        {e.id} {e.title} {e.user} {e.dateCreated}
-        <span
-          style={{ cursor: "pointer" }}
-          onClick={() => dispatch(removePost(e.id))}
-        >
-          &#128540;
-        </span>
-      </li>
-    ))}*/
   };
 
 
@@ -89,27 +79,29 @@ function Posts() {
 
   return (
     <>
-      <Table dataSource={state.posts.data.map((e) => (
-          key=e.id,
-          username=e.user
-      ))}>
-        <Column title="Post ID" dataIndex="id" key="id" />
-        <Column title="Username" dataIndex="user" key="user" />
-        <Column title="Topic" dataIndex="title" key="title" />
-        <Column title="Date Created" dataIndex="dateCreated" key="dateCreated" />
+      <Layout>
+        <Content>
+          <Table className="listpost">
+            <Column title="Post ID" dataIndex="id" key="id" />
+            <Column title="Username" dataIndex="user" key="user" />
+            <Column title="Topic" dataIndex="title" key="title" />
+            <Column title="Date Created" dataIndex="dateCreated" key="dateCreated" />
       
-        <Column
-          title="Actions"
-          key="action"
-          render={(text, record) => (
-            <Space size="middle">
-              <a>Delete</a>
-              <a>Update</a>
-              <a>Edit</a>
-            </Space>
-          )}
-        />
-      </Table>
+            <Column
+                title="Actions"
+                key="action"
+                render={(text, record) => (
+                  <Space size="middle">
+                    <a>Delete</a>
+                    <a>Update</a>
+                    <a>Edit</a>
+                  </Space>
+                )}
+            />
+          </Table>
+        </Content>
+      </Layout>
+      
 
       <div style={{ textAlign: "center" }}>
         <h1>Posts</h1>
@@ -133,8 +125,7 @@ function Posts() {
           > &#128540; </span>
           </li>
         ))}
-  </div>
-
+      </div>
   </>
   );
 }
