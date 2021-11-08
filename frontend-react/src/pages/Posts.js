@@ -2,18 +2,32 @@ import { useContext, useState, useRef, useEffect } from "react";
 import { Context } from "../store";
 import { addPost, removePost, updatePosts } from "../store/actions";
 import { Table, Space, Layout } from 'antd';
+import Title from "antd/lib/skeleton/Title";
 
 const { Content, Footer } = Layout
 
 const { Column } = Table;
 
-let key = 0
-let username = " "
+const data = [
+  {
+    id: 1,
+    userName: "Villu",
+    topic: "Teema",
+    dateCreated: "24.10.11"
+  }
+]
+  
 
 function Posts() {
   const [title, setTitle] = useState("No title added");
   const [state, dispatch] = useContext(Context);
   const inputRef = useRef(null);
+
+  function deleteTopic(){
+    console.log("click")
+    data.splice(0)
+    console.log(data)
+  }
 
   // Ilma dependency massivita ehk ilma [] kutsub välja igal renderdusel
   // tühja massiivi dependencyna esimest korda
@@ -81,10 +95,10 @@ function Posts() {
     <>
       <Layout>
         <Content>
-          <Table className="listpost">
-            <Column title="Post ID" dataIndex="id" key="id" />
-            <Column title="Username" dataIndex="user" key="user" />
-            <Column title="Topic" dataIndex="title" key="title" />
+          <Table className="listpost" dataSource={ data }>
+            <Column title="Post ID" dataIndex="id" key="id"/>
+            <Column title="Username" dataIndex="userName" key="userName" />
+            <Column title="Topic" dataIndex="topic" key="topic" />
             <Column title="Date Created" dataIndex="dateCreated" key="dateCreated" />
       
             <Column
@@ -92,7 +106,7 @@ function Posts() {
                 key="action"
                 render={(text, record) => (
                   <Space size="middle">
-                    <a>Delete</a>
+                    <a onClick={ deleteTopic }>Delete</a>
                     <a>Update</a>
                     <a>Edit</a>
                   </Space>
