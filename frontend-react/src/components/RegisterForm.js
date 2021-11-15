@@ -37,23 +37,69 @@ const tailFormItemLayout = {
     },
 };
 
-function RegisterForm(){
+function RegisterForm(props){
 
     const [form] = Form.useForm();
 
-    const onFinish = (values) => {
+    /*const  = (values) => {
     console.log('Received values of form: ', values);
-    };
+    };*/
+
+    function formHandler (values) {
+
+        const registerDetails = {
+            "firstName": values.firstName,
+            "lastName": values.lastName,
+            "email": values.email,
+            "password": values.password,
+            "nickname": values.nickname,
+            "bio": values.bio
+        }
+
+        //To check register details obj
+        //console.log(registerDetails)
+
+        props.onRegister(registerDetails)
+    }
 
     return (
         <Form
             {...formItemLayout}
             form={form}
             name="register"
-            onFinish={onFinish}
+            onFinish={formHandler}
             
         scrollToFirstError
         >
+        <Form.Item
+            name="firstName"
+            label="Eesnimi"
+            tooltip="Mis on sinu nimi?"
+            rules={[
+                {
+                    required: true,
+                    message: 'Palun sisesta oma nimi!',
+                    whitespace: true,
+                },
+            ]}
+        >
+            <Input />
+        </Form.Item>
+
+        <Form.Item
+            name="lastName"
+            label="Perenimi"
+            tooltip="Mis on sinu perenimi?"
+            rules={[
+                {
+                    required: true,
+                    message: 'Palun sisesta oma perenimi!',
+                    whitespace: true,
+                },
+            ]}
+        >
+            <Input />
+        </Form.Item>
         
         <Form.Item
             name="email"
@@ -74,7 +120,7 @@ function RegisterForm(){
 
         <Form.Item
             name="password"
-            label="Password"
+            label="Parool"
             rules={[
                 {
                     required: true,
@@ -88,13 +134,11 @@ function RegisterForm(){
 
         <Form.Item
             name="nickname"
-            label="Nickname"
+            label="Hüüdnimi"
             tooltip="What do you want others to call you?"
             rules={[
                 {
-                    required: true,
-                    message: 'Please input your nickname!',
-                    whitespace: true,
+                    required: false,
                 },
             ]}
         >
@@ -131,7 +175,7 @@ function RegisterForm(){
 
         <Form.Item {...tailFormItemLayout}>
             <Button type="primary" htmlType="submit">
-            Register
+                Register
             </Button>
         </Form.Item>
         </Form>

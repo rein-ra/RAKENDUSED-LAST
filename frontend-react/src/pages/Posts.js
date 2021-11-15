@@ -2,38 +2,24 @@ import { useContext, useState, useRef, useEffect } from "react";
 import { Context } from "../store";
 import { addPost, removePost, updatePosts } from "../store/actions";
 import { Table, Space, Layout } from 'antd';
-import Title from "antd/lib/skeleton/Title";
 
-const { Content, Footer } = Layout
+const { Content } = Layout
 
 const { Column } = Table;
 
-const data = [
-  {
-    id: 1,
-    userName: "Villu",
-    topic: "Teema",
-    dateCreated: "24.10.11"
-  }
-]
-  
+let data = []
 
 function Posts() {
   const [title, setTitle] = useState("No title added");
   const [state, dispatch] = useContext(Context);
   const inputRef = useRef(null);
 
-  function deleteTopic(){
-    console.log("click")
-    data.splice(0)
-    console.log(data)
-  }
-
   // Ilma dependency massivita ehk ilma [] kutsub välja igal renderdusel
   // tühja massiivi dependencyna esimest korda
   // saab ka kutsuda teatud state muutustel välja
 
   useEffect(() => {
+    
     dispatch(updatePosts([
       {
         id: 1,
@@ -60,6 +46,7 @@ function Posts() {
         dateCreated: Date.now()
       },
     ]))
+    data = state.posts.data
   }, [])
 
   // Või võite panna eraldi nupu, et "Get latest from database" (Sync)
@@ -72,12 +59,14 @@ function Posts() {
     addNewPost()
 
     if (inputRef.current) inputRef.current.focus();
+
+    console.log(state.auth.token)
   };
 
 
   const addNewPost = () => {
     const newPost = {
-      id: 7,
+      id: 5,
       title: title,
       user: "System assigned",
       dateCreated: Date.now()
@@ -87,18 +76,21 @@ function Posts() {
     // siis teeme dispatchi ja uuendame state lokaalselt
 
     dispatch(addPost(newPost));
+
   };
 
   console.log({ inputRef });
+
+  
 
   return (
     <>
       <Layout>
         <Content>
-          <Table className="listpost" dataSource={ data }>
+          <Table className="listpost" dataSource={ state.posts.data }>
             <Column title="Post ID" dataIndex="id" key="id"/>
-            <Column title="Username" dataIndex="userName" key="userName" />
-            <Column title="Topic" dataIndex="topic" key="topic" />
+            <Column title="Username" dataIndex="user" key="user" />
+            <Column title="Topic" dataIndex="title" key="title" />
             <Column title="Date Created" dataIndex="dateCreated" key="dateCreated" />
       
             <Column
@@ -106,7 +98,7 @@ function Posts() {
                 key="action"
                 render={(text, record) => (
                   <Space size="middle">
-                    <a onClick={ deleteTopic }>Delete</a>
+                    <a onClick={() => dispatch(removePost(state.posts.data.id))}>Delete</a>
                     <a>Update</a>
                     <a>Edit</a>
                   </Space>
@@ -123,7 +115,7 @@ function Posts() {
           <input
             ref={inputRef}
             type="text"
-            value={title}
+            value={ title }
             onChange={(e) => setTitle(e.target.value)}
             autoFocus
           />
